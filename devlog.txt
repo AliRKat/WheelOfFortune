@@ -1,0 +1,35 @@
+Devlog – Day 2: Core Gameplay Foundations
+
+Date: Monday
+
+✅ Progress
+
+ZoneManager: Implemented zone logic (Normal / Safe every 5th / Super every 30th).
+
+WheelController: Random slice selection system done; returns SpinResult struct.
+
+WheelSliceFactory: Temporary builder for zone-specific slice lists (adds bomb only in normal zones).
+
+RewardBank: Working reward accumulation, reset, and collect functions.
+
+GameManager: Core loop functional — spin → result → update rewards → advance zone.
+
+🧪 Testing
+
+Progressed through 10+ zones; safe zones correctly skip bombs.
+
+Bomb resets rewards properly.
+
+Console logs confirm correct flow and totals.
+
+No runtime or reference errors.
+
+🔜 Next (Day 3)
+
+Replace hardcoded slices with ScriptableObjects (RewardData, WheelSliceData, ZoneConfig).
+
+Refactor factory to data-driven system.
+
+Expose all zone/slice configs via the Unity Editor.
+
+Verify correctness with editor-based tests.
