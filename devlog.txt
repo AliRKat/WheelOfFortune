@@ -2,7 +2,7 @@ Devlog – Day 2: Core Gameplay Foundations
 
 Date: Monday
 
-✅ Progress
+Progress
 
 ZoneManager: Implemented zone logic (Normal / Safe every 5th / Super every 30th).
 
@@ -14,7 +14,7 @@ RewardBank: Working reward accumulation, reset, and collect functions.
 
 GameManager: Core loop functional — spin → result → update rewards → advance zone.
 
-🧪 Testing
+Testing
 
 Progressed through 10+ zones; safe zones correctly skip bombs.
 
@@ -24,7 +24,7 @@ Console logs confirm correct flow and totals.
 
 No runtime or reference errors.
 
-🔜 Next (Day 3)
+Next (Day 3)
 
 Replace hardcoded slices with ScriptableObjects (RewardData, WheelSliceData, ZoneConfig).
 
@@ -33,3 +33,29 @@ Refactor factory to data-driven system.
 Expose all zone/slice configs via the Unity Editor.
 
 Verify correctness with editor-based tests.
+
+
+
+Devlog – Day 3
+
+Focus
+
+Transitioned from placeholder logic to a fully data-driven wheel system, and built the tooling pipeline for scalable zone generation.
+
+Progress
+
+Finalized RewardData and ZoneConfig architecture (8-slice per zone, fully editable).
+
+Removed redundant slice layer to simplify data flow and editor UX.
+
+Implemented Zone Generator editor tool to batch-create level configs with automatic bomb placement for normal zones, safe/super intervals, and live progress feedback.
+
+Refactored ZoneManager and GameManager to use generated data directly.
+
+Reworked reward tracking via RewardManager for detailed per-type accumulation and clean session logs.
+
+Next
+
+Integrate custom amount generation logic in the editor tool (scaling by zone index/type).
+
+Verify runtime logging consistency and reward tracking across multiple spins.

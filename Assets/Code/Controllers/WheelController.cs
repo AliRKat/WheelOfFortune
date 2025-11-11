@@ -1,15 +1,21 @@
-using System.Collections.Generic;
+using UnityEngine;
 
 public class WheelController {
-    private readonly System.Random _rng = new System.Random();
-
-    public SpinResult Spin(List<WheelSlice> slices) {
-        if (slices == null || slices.Count == 0)
+    public SpinResult Spin(ZoneConfig zone) {
+        if (zone == null || zone.slices == null || zone.slices.Count == 0)
             return SpinResult.Empty;
 
-        int index = _rng.Next(0, slices.Count);
-        var selected = slices[index];
+        int index = Random.Range(0, zone.slices.Count);
+        var slice = zone.slices[index];
 
-        return new SpinResult(selected.Kind == SliceKind.Bomb, selected.Amount, selected.Id, index);
+        if (slice.isBomb)
+            return new SpinResult(true, 0, "bomb", null);
+
+        int finalAmount = slice.customAmount > 0
+            ? slice.customAmount
+            : slice.reward.baseAmount;
+
+        return new SpinResult(false, finalAmount, slice.reward.rewardId, slice.reward);
+
     }
 }

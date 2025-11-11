@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8f5e9598a1acc4bbf27375b2ff3d26, type: 3}
+  m_Name: Zone_021
+  m_EditorClassIdentifier: 
+  zoneId: Zone_021
+  type: 0
+  slices:
+  - isBomb: 0
+    reward: {fileID: 11400000, guid: 96c493bda9ddd254c80352dd55cd0b66, type: 2}
+    customAmount: 0
+  - isBomb: 0
+    reward: {fileID: 11400000, guid: 3f0b52e17f459d540ae179fb7c2ce6fa, type: 2}
+    customAmount: 0
+  - isBomb: 0
+    reward: {fileID: 11400000, guid: 792f4de465319b34ca456c0d76d27a9d, type: 2}
+    customAmount: 0
+  - isBomb: 0
+    reward: {fileID: 11400000, guid: 255ee84cc6d5b814d8dd455a3a2560a6, type: 2}
+    customAmount: 0
+  - isBomb: 0
+    reward: {fileID: 11400000, guid: 255ee84cc6d5b814d8dd455a3a2560a6, type: 2}
+    customAmount: 0
+  - isBomb: 0
+    reward: {fileID: 11400000, guid: 9e31b750073b18a43882dce200991d4f, type: 2}
+    customAmount: 0
+  - isBomb: 0
+    reward: {fileID: 11400000, guid: 31d53005931f54f49b822f026eb0800f, type: 2}
+    customAmount: 0
+  - isBomb: 1
+    reward: {fileID: 0}
+    customAmount: 0

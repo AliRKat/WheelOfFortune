@@ -2,14 +2,14 @@ public struct SpinResult {
     public bool IsBomb;
     public int RewardAmount;
     public string RewardId;
-    public int SliceIndex;
+    public RewardData RewardData;
 
-    public SpinResult(bool isBomb, int rewardAmount, string rewardId, int sliceIndex) {
+    public static SpinResult Empty => new SpinResult(true, 0, "none", null);
+
+    public SpinResult(bool isBomb, int amount, string id, RewardData data) {
         IsBomb = isBomb;
-        RewardAmount = rewardAmount;
-        RewardId = rewardId;
-        SliceIndex = sliceIndex;
+        RewardAmount = amount;
+        RewardId = id;
+        RewardData = data;
     }
-
-    public static SpinResult Empty => new SpinResult(true, 0, string.Empty, -1);
 }
