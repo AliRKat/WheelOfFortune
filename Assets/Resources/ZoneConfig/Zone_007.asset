@@ -15,27 +15,27 @@ MonoBehaviour:
   zoneId: Zone_007
   type: 0
   slices:
-  - isBomb: 0
-    reward: {fileID: 11400000, guid: 7297d7606ee5d2a46bffae8cba9df30a, type: 2}
-    customAmount: 0
-  - isBomb: 0
-    reward: {fileID: 11400000, guid: 208963033320ca44f8316531cdd4d995, type: 2}
-    customAmount: 0
-  - isBomb: 0
-    reward: {fileID: 11400000, guid: 3f0b52e17f459d540ae179fb7c2ce6fa, type: 2}
-    customAmount: 0
-  - isBomb: 0
-    reward: {fileID: 11400000, guid: 3f0b52e17f459d540ae179fb7c2ce6fa, type: 2}
-    customAmount: 0
-  - isBomb: 0
-    reward: {fileID: 11400000, guid: a8d769f878f662a4f816da8074dafd9b, type: 2}
-    customAmount: 0
   - isBomb: 1
     reward: {fileID: 0}
     customAmount: 0
   - isBomb: 0
-    reward: {fileID: 11400000, guid: 208963033320ca44f8316531cdd4d995, type: 2}
-    customAmount: 0
+    reward: {fileID: 11400000, guid: 252364b75847e2f4ea66cd43ff777660, type: 2}
+    customAmount: 20
+  - isBomb: 0
+    reward: {fileID: 11400000, guid: e6525f085b377f240a808586dde3b418, type: 2}
+    customAmount: 26
+  - isBomb: 0
+    reward: {fileID: 11400000, guid: 05752b38a1142bf419b8faeaffb68ba1, type: 2}
+    customAmount: 25
+  - isBomb: 0
+    reward: {fileID: 11400000, guid: 255ee84cc6d5b814d8dd455a3a2560a6, type: 2}
+    customAmount: 45
+  - isBomb: 0
+    reward: {fileID: 11400000, guid: 92e21136ee56e7046b031031d906e337, type: 2}
+    customAmount: 32
+  - isBomb: 0
+    reward: {fileID: 11400000, guid: 451ea883fb53f6d4197deeb814ee81ba, type: 2}
+    customAmount: 34
   - isBomb: 0
     reward: {fileID: 11400000, guid: 3fd258e7570df9941a4320ede8be4691, type: 2}
-    customAmount: 0
+    customAmount: 56

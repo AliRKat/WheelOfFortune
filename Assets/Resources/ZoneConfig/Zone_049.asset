@@ -16,26 +16,26 @@ MonoBehaviour:
   type: 0
   slices:
   - isBomb: 0
-    reward: {fileID: 11400000, guid: e4035ffe1176a30478f209360233de38, type: 2}
-    customAmount: 0
+    reward: {fileID: 11400000, guid: 792f4de465319b34ca456c0d76d27a9d, type: 2}
+    customAmount: 40
   - isBomb: 0
-    reward: {fileID: 11400000, guid: bac3033e5a1560048847122bab886887, type: 2}
-    customAmount: 0
+    reward: {fileID: 11400000, guid: 255ee84cc6d5b814d8dd455a3a2560a6, type: 2}
+    customAmount: 88
   - isBomb: 0
-    reward: {fileID: 11400000, guid: 208963033320ca44f8316531cdd4d995, type: 2}
-    customAmount: 0
-  - isBomb: 0
-    reward: {fileID: 11400000, guid: bac3033e5a1560048847122bab886887, type: 2}
-    customAmount: 0
-  - isBomb: 0
-    reward: {fileID: 11400000, guid: 9e31b750073b18a43882dce200991d4f, type: 2}
-    customAmount: 0
+    reward: {fileID: 11400000, guid: 255ee84cc6d5b814d8dd455a3a2560a6, type: 2}
+    customAmount: 72
   - isBomb: 1
     reward: {fileID: 0}
     customAmount: 0
   - isBomb: 0
-    reward: {fileID: 11400000, guid: 252364b75847e2f4ea66cd43ff777660, type: 2}
-    customAmount: 0
+    reward: {fileID: 11400000, guid: bac3033e5a1560048847122bab886887, type: 2}
+    customAmount: 12
   - isBomb: 0
-    reward: {fileID: 11400000, guid: e4035ffe1176a30478f209360233de38, type: 2}
-    customAmount: 0
+    reward: {fileID: 11400000, guid: 9e31b750073b18a43882dce200991d4f, type: 2}
+    customAmount: 42
+  - isBomb: 0
+    reward: {fileID: 11400000, guid: 92e21136ee56e7046b031031d906e337, type: 2}
+    customAmount: 47
+  - isBomb: 0
+    reward: {fileID: 11400000, guid: 3fd258e7570df9941a4320ede8be4691, type: 2}
+    customAmount: 96
