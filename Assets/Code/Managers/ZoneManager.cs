@@ -28,6 +28,29 @@ namespace Code.Managers {
             if (CurrentZone > _zones.Length)
                 CurrentZone = _zones.Length; // clamp at max
         }
+
+        public void ResetToStart() {
+            CurrentZone = 1;
+        }
+
+        public void RemoveBombFromCurrentZone() {
+            var zone = GetCurrentZone();
+            if (zone == null || zone.slices == null)
+                return;
+
+            bool modified = false;
+            foreach (var slice in zone.slices) {
+                if (slice.isBomb) {
+                    slice.isBomb = false;
+                    modified = true;
+                }
+            }
+
+            if (modified)
+                Debug.Log($"Bomb removed from {zone.zoneId}");
+            else
+                Debug.LogWarning($"No bomb found in {zone.zoneId}");
+        }
     }
 
 }
