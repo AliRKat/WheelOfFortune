@@ -4,8 +4,8 @@ using UnityEngine;
 [System.Serializable]
 public class ZoneSlice {
     public bool isBomb;
-    public RewardData reward;
-    public int customAmount; // optional override; 0 means use reward.baseAmount
+    public WheelItemData itemData;
+    public int customAmount;
 }
 
 [CreateAssetMenu(menuName = "Game/Zone Config", fileName = "Zone_New")]

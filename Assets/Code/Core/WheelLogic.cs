@@ -15,8 +15,8 @@ public class WheelLogic
 
         int finalAmount = slice.customAmount > 0
             ? slice.customAmount
-            : slice.reward.baseAmount;
+            : slice.itemData.baseAmount;
 
-        return new SpinResult(false, finalAmount, slice.reward.rewardId, slice.reward);
+        return new SpinResult(false, finalAmount, slice.itemData.itemId, slice.itemData);
     }
 }

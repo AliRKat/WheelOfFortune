@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8f5e9598a1acc4bbf27375b2ff3d26, type: 3}
+  m_Name: Zone_052
+  m_EditorClassIdentifier: 
+  zoneId: Zone_052
+  type: 0
+  slices:
+  - isBomb: 1
+    itemData: {fileID: 11400000, guid: 8e3f09326e0dad0469f8761f6adc077f, type: 2}
+    customAmount: 0
+  - isBomb: 0
+    itemData: {fileID: 11400000, guid: a8d769f878f662a4f816da8074dafd9b, type: 2}
+    customAmount: 22
+  - isBomb: 0
+    itemData: {fileID: 11400000, guid: e4035ffe1176a30478f209360233de38, type: 2}
+    customAmount: 8
+  - isBomb: 0
+    itemData: {fileID: 11400000, guid: 96c493bda9ddd254c80352dd55cd0b66, type: 2}
+    customAmount: 17
+  - isBomb: 0
+    itemData: {fileID: 11400000, guid: 451ea883fb53f6d4197deeb814ee81ba, type: 2}
+    customAmount: 84
+  - isBomb: 0
+    itemData: {fileID: 11400000, guid: 3fd258e7570df9941a4320ede8be4691, type: 2}
+    customAmount: 98
+  - isBomb: 0
+    itemData: {fileID: 11400000, guid: 05752b38a1142bf419b8faeaffb68ba1, type: 2}
+    customAmount: 44
+  - isBomb: 0
+    itemData: {fileID: 11400000, guid: 208963033320ca44f8316531cdd4d995, type: 2}
+    customAmount: 39

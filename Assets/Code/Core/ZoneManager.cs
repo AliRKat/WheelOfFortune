@@ -1,7 +1,7 @@
-namespace Code.Managers {
-    using UnityEngine;
-    using System.Linq;
+using UnityEngine;
+using System.Linq;
 
+namespace Code.Managers {
     public class ZoneManager {
         public int CurrentZone { get; private set; } = 1;
         private ZoneConfig[] _zones;

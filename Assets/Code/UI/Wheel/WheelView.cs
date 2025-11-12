@@ -5,11 +5,10 @@ public class WheelView : MonoBehaviour {
     [Header("References")]
     [SerializeField] private List<WheelSlotController> _slots;
     [SerializeField] private Transform _wheelVisual;
-    [SerializeField] private Sprite _bombSprite;
 
     /// <summary>
-    /// Populates the wheel UI with the given ZoneConfig data.
-    /// Each slot is filled with its corresponding reward visuals.
+    /// Populates the wheel slots based on the given ZoneConfig.
+    /// Each slice is rendered using its WheelItemData.
     /// </summary>
     public void SetUp(ZoneConfig zone) {
         if (zone == null) {
@@ -22,7 +21,6 @@ public class WheelView : MonoBehaviour {
             return;
         }
 
-        // Fill or clear slots depending on zone data
         for (int i = 0; i < _slots.Count; i++) {
             if (i >= zone.slices.Count) {
                 _slots[i].SetData(new SlotViewData(null, "", false));
@@ -30,28 +28,24 @@ public class WheelView : MonoBehaviour {
             }
 
             var slice = zone.slices[i];
+            var item = slice.itemData;
 
-            if (slice.isBomb) {
-                _slots[i].SetData(new SlotViewData(_bombSprite, "", true));
-                continue;
-            }
-
-            if (slice.reward == null) {
+            if (item == null) {
                 _slots[i].SetData(new SlotViewData(null, "", false));
                 continue;
             }
 
-            int amount = slice.customAmount > 0
-                ? slice.customAmount
-                : slice.reward.baseAmount;
+            string amountText = item.showAmount
+                ? (slice.customAmount > 0 ? slice.customAmount : item.baseAmount).ToString()
+                : "";
 
-            var data = new SlotViewData(slice.reward.icon, amount.ToString(), true);
-            _slots[i].SetData(data);
+            var viewData = new SlotViewData(item.icon, amountText, true);
+            _slots[i].SetData(viewData);
         }
     }
 
     /// <summary>
-    /// Clears all slot visuals (used before setting up a new zone or when resetting).
+    /// Clears all slot visuals (used before switching zones or resetting).
     /// </summary>
     public void ClearAll() {
         foreach (var slot in _slots)
@@ -59,10 +53,10 @@ public class WheelView : MonoBehaviour {
     }
 
     /// <summary>
-    /// Spins the wheel visually (placeholder for animation).
+    /// Visual spin animation placeholder. Can be replaced with tweening later.
     /// </summary>
     public void SpinVisual(float rotationAmount = 720f, float duration = 2f) {
-        // Optional placeholder for animation, e.g. using DOTween later.
+        // Example (if DOTween is used):
         // _wheelVisual.DORotate(new Vector3(0, 0, rotationAmount), duration, RotateMode.FastBeyond360);
     }
 }

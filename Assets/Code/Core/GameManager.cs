@@ -1,71 +1,84 @@
-using Code.Managers;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour {
-    private ZoneManager _zoneManager;
-    private WheelLogic _wheelController;
-    private RewardManager _rewardManager;
-    private bool _waitingForChoice = false;
+namespace Code.Managers {
+    public class GameManager : MonoBehaviour {
+        [Header("Core References")]
+        [SerializeField] private WheelView _wheelView;
+        private WheelLogic _wheelLogic;
+        private ZoneManager _zoneManager;
+        private RewardManager _rewardManager;
+        private bool _waitingForChoice = false;
+        private bool _initialized = false;
 
-    private void Awake() {
-        _zoneManager = new ZoneManager();
-        _wheelController = new WheelLogic();
-        _rewardManager = new RewardManager();
-    }
-
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.Space))
-            DoSpin();
-
-        if (Input.GetKeyDown(KeyCode.L)) {
-            _rewardManager.Collect();
+        private void Awake() {
+            _wheelLogic = new WheelLogic();
+            _zoneManager = new ZoneManager();
+            _rewardManager = new RewardManager();
         }
 
-        if (_waitingForChoice) {
-            if (Input.GetKeyDown(KeyCode.Y)) {
-                Debug.Log("Paid coins. Continuing from current zone.");
-                _zoneManager.RemoveBombFromCurrentZone();
-                _waitingForChoice = false;
-            } else if (Input.GetKeyDown(KeyCode.N)) {
-                Debug.Log("Declined. Progress reset to Zone 1.");
-                _rewardManager.Reset();
-                _zoneManager.ResetToStart();
-                _waitingForChoice = false;
+        private void Start() {
+            InitializeCurrentZone();
+        }
+
+        private void Update() {
+            // Simulate bomb choice input
+            if (_waitingForChoice) {
+                if (Input.GetKeyDown(KeyCode.Y)) {
+                    Debug.Log("Player paid coins. Continuing from same zone.");
+                    _zoneManager.RemoveBombFromCurrentZone();
+                    _waitingForChoice = false;
+                    InitializeCurrentZone();
+                } else if (Input.GetKeyDown(KeyCode.N)) {
+                    Debug.Log("Player declined. Resetting progress to Zone 1.");
+                    _rewardManager.Reset();
+                    _zoneManager.ResetToStart();
+                    _waitingForChoice = false;
+                    InitializeCurrentZone();
+                }
+                return;
             }
-            return; // skip other input while waiting
+
+            // Spin trigger
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                DoSpin();
+            }
+        }
+
+        private void InitializeCurrentZone() {
+            var zone = _zoneManager.GetCurrentZone();
+            if (zone == null) {
+                Debug.LogError("No ZoneConfig found for current zone!");
+                return;
+            }
+
+            _wheelView.ClearAll();
+            _wheelView.SetUp(zone);
+
+            Debug.Log($"Initialized Wheel for {zone.zoneId} ({zone.type})");
+            _initialized = true;
+        }
+
+        private void DoSpin() {
+            if (!_initialized) return;
+
+            var zone = _zoneManager.GetCurrentZone();
+            var result = _wheelLogic.Spin(zone);
+
+            if (result.IsBomb) {
+                Debug.Log($"Bomb hit in {zone.zoneId}! Waiting for player decision...");
+                _waitingForChoice = true;
+                return;
+            }
+
+            _rewardManager.Add(result.RewardData, result.RewardAmount);
+
+            string earnings = _rewardManager.GetEarningsString();
+            Debug.Log($"Zone: {_zoneManager.CurrentZone} | Type: {zone.type} | " +
+                      $"Gained: +{result.RewardAmount} {result.RewardData.category} | " +
+                      $"Earnings: {earnings}");
+
+            _zoneManager.AdvanceZone();
+            InitializeCurrentZone();
         }
     }
-
-    private void DoSpin() {
-        ZoneConfig zone = _zoneManager.GetCurrentZone();
-        if (zone == null) {
-            Debug.LogError("Zone data not found.");
-            return;
-        }
-
-        var result = _wheelController.Spin(zone);
-
-        if (result.IsBomb) {
-            Debug.Log($"💣 BOMB in zone {_zoneManager.CurrentZone}. Rewards lost.\n" +
-                      "Press Y to pay coins and retry, N to decline and reset.");
-
-            // Temporarily stop advancing zone until choice is made
-            _waitingForChoice = true;
-            return;
-        }
-
-
-        _rewardManager.Add(result.RewardData, result.RewardAmount);
-
-        string earnings = _rewardManager.GetEarningsString();
-
-        Debug.Log(
-            $"Zone {_zoneManager.CurrentZone} | Type: {zone.type} | " +
-            $"Gained: +{result.RewardAmount} {result.RewardData.category} | " +
-            $"Earnings: {earnings}"
-        );
-
-        _zoneManager.AdvanceZone();
-    }
-
 }

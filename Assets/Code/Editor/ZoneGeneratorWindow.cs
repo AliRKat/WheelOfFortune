@@ -9,7 +9,8 @@ public class ZoneGeneratorWindow : EditorWindow {
     private int slicesPerZone = 8;
     private int safeZoneInterval = 5;
     private int superZoneInterval = 30;
-    private string outputPath = "Assets/Resources/ZoneConfig";
+    private static string outputPath = "Assets/Resources/ZoneConfig";
+    private static string inputPath = "WheelItemData";
 
     [MenuItem("Tools/Zone Generator")]
     public static void ShowWindow() {
@@ -35,9 +36,9 @@ public class ZoneGeneratorWindow : EditorWindow {
         if (!Directory.Exists(outputPath))
             Directory.CreateDirectory(outputPath);
 
-        var rewards = Resources.LoadAll<RewardData>("RewardData");
-        if (rewards.Length == 0) {
-            Debug.LogError("No RewardData found under Resources/RewardData.");
+        var items = Resources.LoadAll<WheelItemData>(inputPath);
+        if (items.Length == 0) {
+            Debug.LogError("No WheelItemData found under Resources/" + inputPath);
             return;
         }
 
@@ -47,6 +48,7 @@ public class ZoneGeneratorWindow : EditorWindow {
                 EditorUtility.DisplayProgressBar("Generating Zones",
                     $"Creating Zone {i}/{zoneCount}", progress);
 
+                // --- Zone setup ---
                 ZoneType type = ZoneType.Normal;
                 if (i % superZoneInterval == 0) type = ZoneType.Super;
                 else if (i % safeZoneInterval == 0) type = ZoneType.Safe;
@@ -56,38 +58,48 @@ public class ZoneGeneratorWindow : EditorWindow {
                 zone.type = type;
                 zone.slices = new List<ZoneSlice>();
 
-                int bombIndex = -1;
-                if (type == ZoneType.Normal)
-                    bombIndex = Random.Range(0, slicesPerZone);
+                bool allowBombs = (type == ZoneType.Normal);
 
+                var bombItems = new List<WheelItemData>();
+                var rewardItems = new List<WheelItemData>();
+                foreach (var item in items) {
+                    if (item.isBomb)
+                        bombItems.Add(item);
+                    else
+                        rewardItems.Add(item);
+                }
+
+                if (rewardItems.Count == 0) {
+                    Debug.LogError("No non-bomb WheelItemData found.");
+                    return;
+                }
+
+                int bombIndex = allowBombs ? Random.Range(0, slicesPerZone) : -1;
+
+                // --- Slice generation ---
                 for (int s = 0; s < slicesPerZone; s++) {
                     var slice = new ZoneSlice();
-                    slice.isBomb = s == bombIndex;
 
-                    if (!slice.isBomb) {
-                        var reward = rewards[Random.Range(0, rewards.Length)];
-                        slice.reward = reward;
+                    if (allowBombs && s == bombIndex && bombItems.Count > 0) {
+                        var bombItem = bombItems[Random.Range(0, bombItems.Count)];
+                        slice.itemData = bombItem;
+                        slice.isBomb = true;
+                        slice.customAmount = 0;
+                    } else {
+                        var reward = rewardItems[Random.Range(0, rewardItems.Count)];
+                        slice.itemData = reward;
+                        slice.isBomb = reward.isBomb;
 
                         float multiplier = 1f;
-
-                        // Zone-based scaling
                         switch (type) {
-                            case ZoneType.Safe:
-                                multiplier = 1.5f;
-                                break;
-                            case ZoneType.Super:
-                                multiplier = 2.5f;
-                                break;
+                            case ZoneType.Safe: multiplier = 1.5f; break;
+                            case ZoneType.Super: multiplier = 2.5f; break;
                         }
 
-                        // Progressive scaling: zone index affects output
-                        // (so Zone_50 gives higher amounts than Zone_5)
-                        multiplier *= 1f + (i / 50f); // increase gradually with depth
-
-                        // Randomize slightly for variety (±20%)
+                        multiplier *= 1f + (i / 50f);
                         float variance = Random.Range(0.8f, 1.2f);
-
                         int finalAmount = Mathf.RoundToInt(reward.baseAmount * multiplier * variance);
+
                         slice.customAmount = Mathf.Max(1, finalAmount);
                     }
 
@@ -105,6 +117,7 @@ public class ZoneGeneratorWindow : EditorWindow {
             EditorUtility.ClearProgressBar();
         }
     }
+
 
 }
 #endif
