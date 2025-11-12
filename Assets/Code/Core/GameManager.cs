@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
     private ZoneManager _zoneManager;
-    private WheelController _wheelController;
+    private WheelLogic _wheelController;
     private RewardManager _rewardManager;
     private bool _waitingForChoice = false;
 
     private void Awake() {
         _zoneManager = new ZoneManager();
-        _wheelController = new WheelController();
+        _wheelController = new WheelLogic();
         _rewardManager = new RewardManager();
     }
 

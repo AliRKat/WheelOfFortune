@@ -1,7 +1,9 @@
 using UnityEngine;
 
-public class WheelController {
-    public SpinResult Spin(ZoneConfig zone) {
+public class WheelLogic
+{
+    public SpinResult Spin(ZoneConfig zone)
+    {
         if (zone == null || zone.slices == null || zone.slices.Count == 0)
             return SpinResult.Empty;
 
@@ -16,6 +18,5 @@ public class WheelController {
             : slice.reward.baseAmount;
 
         return new SpinResult(false, finalAmount, slice.reward.rewardId, slice.reward);
-
     }
 }
