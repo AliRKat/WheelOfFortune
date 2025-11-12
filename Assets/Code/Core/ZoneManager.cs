@@ -51,6 +51,15 @@ namespace Code.Managers {
             else
                 Debug.LogWarning($"No bomb found in {zone.zoneId}");
         }
+
+        public ZoneConfig GetZoneByIndex(int index) {
+            if (_zones == null || _zones.Length == 0)
+                return null;
+
+            int clamped = Mathf.Clamp(index - 1, 0, _zones.Length - 1);
+            return _zones[clamped];
+        }
+
     }
 
 }

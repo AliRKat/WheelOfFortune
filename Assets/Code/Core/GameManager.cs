@@ -1,3 +1,4 @@
+using Code.UI;
 using UnityEngine;
 
 namespace Code.Managers {
@@ -10,6 +11,9 @@ namespace Code.Managers {
         private bool _waitingForChoice = false;
         private bool _initialized = false;
 
+        [Header("UI References - Placeholder")]
+        [SerializeField] private ZoneProgressUI _zoneProgressUI;
+
         private void Awake() {
             _wheelLogic = new WheelLogic();
             _zoneManager = new ZoneManager();
@@ -17,6 +21,7 @@ namespace Code.Managers {
         }
 
         private void Start() {
+            _zoneProgressUI.Init(_zoneManager);
             InitializeCurrentZone();
         }
 
@@ -56,6 +61,7 @@ namespace Code.Managers {
 
             Debug.Log($"Initialized Wheel for {zone.zoneId} ({zone.type})");
             _initialized = true;
+            _zoneProgressUI.Refresh();
         }
 
         private void DoSpin() {
