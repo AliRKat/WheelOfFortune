@@ -1,16 +1,28 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+public class WheelViewInitData {
+    public ZoneConfig zoneConfig;
+    public WheelSkinData wheelSkinData;
+}
 
 public class WheelView : MonoBehaviour {
     [Header("References")]
     [SerializeField] private List<WheelSlotController> _slots;
     [SerializeField] private Transform _wheelVisual;
 
+    [SerializeField] private Image _baseWheelImage;
+    [SerializeField] private Image _indicatorImage;
+
     /// <summary>
     /// Populates the wheel slots based on the given ZoneConfig.
     /// Each slice is rendered using its WheelItemData.
     /// </summary>
-    public void SetUp(ZoneConfig zone) {
+    public void SetUp(WheelViewInitData initData) {
+        var zone = initData.zoneConfig;
+        var skinData = initData.wheelSkinData;
+
         if (zone == null) {
             Debug.LogError("WheelView: ZoneConfig is null.");
             return;
@@ -21,6 +33,8 @@ public class WheelView : MonoBehaviour {
             return;
         }
 
+        ApplySkin(skinData);
+        
         for (int i = 0; i < _slots.Count; i++) {
             if (i >= zone.slices.Count) {
                 _slots[i].SetData(new SlotViewData(null, "", false));
@@ -59,4 +73,11 @@ public class WheelView : MonoBehaviour {
         // Example (if DOTween is used):
         // _wheelVisual.DORotate(new Vector3(0, 0, rotationAmount), duration, RotateMode.FastBeyond360);
     }
+
+    public void ApplySkin(WheelSkinData skin) {
+        if (skin == null) return;
+        _baseWheelImage.sprite = skin.baseWheel;
+        _indicatorImage.sprite = skin.indicator;
+    }
+
 }

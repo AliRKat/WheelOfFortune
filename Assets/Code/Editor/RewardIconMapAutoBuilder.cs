@@ -1,7 +1,7 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
-using System.IO;
 
 public class RewardIconMapAutoBuilder : EditorWindow {
     private RewardUIMap _targetMap;
@@ -79,3 +79,4 @@ public class RewardIconMapAutoBuilder : EditorWindow {
         Debug.Log($"RewardUIMap updated. {newEntries.Count} entries added.");
     }
 }
+#endif

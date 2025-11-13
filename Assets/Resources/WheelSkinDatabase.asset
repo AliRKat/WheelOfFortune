@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01db7b1614ac83b448d4aed147698560, type: 3}
+  m_Name: WheelSkinDatabase
+  m_EditorClassIdentifier: 
+  bronzeSkin:
+    baseWheel: {fileID: 21300000, guid: 4cda39c3081e29e4fba3ab22643f74c2, type: 3}
+    indicator: {fileID: 21300000, guid: 24a76649a58e6154fa103671986877f4, type: 3}
+  silverSkin:
+    baseWheel: {fileID: 21300000, guid: 295fc30bd66b53249b33e77c978a4481, type: 3}
+    indicator: {fileID: 21300000, guid: 2c920c37f5228a349aaa20cdf0790790, type: 3}
+  goldSkin:
+    baseWheel: {fileID: 21300000, guid: b29f9097508254c40b7d131270b94c24, type: 3}
+    indicator: {fileID: 21300000, guid: a4dcc2b6380966149a229ca7accf942f, type: 3}

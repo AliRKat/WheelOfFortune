@@ -61,6 +61,8 @@ MonoBehaviour:
   - {fileID: 3582138526246149523}
   - {fileID: 1603902930976482659}
   _wheelVisual: {fileID: 3966286669775626042}
+  _baseWheelImage: {fileID: 3966286669775626041}
+  _indicatorImage: {fileID: 3966286670467646231}
 --- !u!1 &3966286669775626043
 GameObject:
   m_ObjectHideFlags: 0
