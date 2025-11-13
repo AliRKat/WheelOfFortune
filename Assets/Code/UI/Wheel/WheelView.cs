@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Code.Core;
 
 public class WheelViewInitData {
     public ZoneConfig zoneConfig;
@@ -85,6 +86,7 @@ public class WheelView : MonoBehaviour {
             onComplete?.Invoke();
             return;
         }
+        GameEvents.SpinStarted?.Invoke();
 
         // Kill any previous tween and hard reset rotation.
         _spinTween?.Kill();
@@ -111,6 +113,7 @@ public class WheelView : MonoBehaviour {
             .OnComplete(() => {
                 // Ensure we end exactly at the intended angle (no float residue).
                 _wheelVisual.localEulerAngles = new Vector3(0, 0, deltaAngle);
+                GameEvents.SpinEnded?.Invoke();
                 onComplete?.Invoke();
             });
     }

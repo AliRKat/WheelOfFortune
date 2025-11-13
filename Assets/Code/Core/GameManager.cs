@@ -56,8 +56,6 @@ namespace Code.Managers {
                 return;
             }
 
-            _uiManager.UpdateExitButtonVisibility(true);
-
             PerformSpin();
         }
 
@@ -132,11 +130,7 @@ namespace Code.Managers {
                 $"Logic selected slice index = {winIndex}");
 
             // Wheel animates to the EXACT winning index
-            _wheelView.SpinToIndex(
-                winIndex,
-                duration: 2.0f,
-                onComplete: () => ResolveSpin(result)
-            );
+            _wheelView.SpinToIndex(result.WinningIndex, 2f, () => ResolveSpin(result));
         }
 
         private void ResolveSpin(SpinResult result) {
@@ -145,7 +139,6 @@ namespace Code.Managers {
 
             // wheel ready for next action
             _isSpinning = false;
-            _uiManager.UpdateExitButtonVisibility(false);
 
             // BOMB case: no reward, show popup
             if (result.IsBomb) {

@@ -67,6 +67,8 @@ namespace Code.Managers {
             _zoneProgressUI.Init(_zoneManager);
 
             GameEvents.BombHit += OnBombHit;
+            GameEvents.SpinStarted += OnSpinStarted;
+            GameEvents.SpinEnded += OnSpinEnded;
             BindButtonEvents();
         }
 
@@ -81,16 +83,19 @@ namespace Code.Managers {
             _zoneProgressUI.Refresh();
         }
 
-        public void UpdateExitButtonVisibility(bool isSpinning) {
-            if (_exitButton == null)
-                return;
-
-            var zone = _zoneManager.GetCurrentZone();
-            bool canExit = !isSpinning && (zone.type == ZoneType.Safe || zone.type == ZoneType.Super);
-
-            _exitButton.gameObject.SetActive(canExit);
+        public void UpdateExitButtonVisibility(bool isSpinning, bool waitingForBomb = false) {
+            bool show = !isSpinning && !waitingForBomb;
+            _exitButton.gameObject.SetActive(show);
         }
 
+        private void OnSpinStarted() {
+            UpdateExitButtonVisibility(true);
+        }
+
+        private void OnSpinEnded() {
+            UpdateExitButtonVisibility(false);
+        }
+        
         private void OnBombHit() {
             UpdateExitButtonVisibility(true);
             InstantiateBombPopup();
