@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5b0e1fea026a4746b972c25c27d9946, type: 3}
+  m_Name: RewardIconMap
+  m_EditorClassIdentifier: 
+  entries:
+  - itemId: bomb
+    icon: {fileID: 21300000, guid: 361a1626daeb14a4a95704cb324694a3, type: 3}
+  - itemId: cash_large
+    icon: {fileID: 21300000, guid: 91c14d5a579b92047a3eb1faacabd8da, type: 3}
+  - itemId: cash_small
+    icon: {fileID: 21300000, guid: 91c14d5a579b92047a3eb1faacabd8da, type: 3}
+  - itemId: cash_std
+    icon: {fileID: 21300000, guid: 91c14d5a579b92047a3eb1faacabd8da, type: 3}
+  - itemId: chest_big
+    icon: {fileID: 21300000, guid: ab11eefa697df1d4f98dd38681f4bdc5, type: 3}
+  - itemId: chest_bronze
+    icon: {fileID: 21300000, guid: 034c5474a6af645408e4051b2f572b05, type: 3}
+  - itemId: chest_gold
+    icon: {fileID: 21300000, guid: 0b5261cb7f2d6134d81f8cd9cf0fa1b3, type: 3}
+  - itemId: chest_silver
+    icon: {fileID: 21300000, guid: e070bbfe82fbbeb48969f4c0ffff72bc, type: 3}
+  - itemId: chest_small
+    icon: {fileID: 21300000, guid: 6fed5e3fa4e8a96498cdbdb20d9025ed, type: 3}
+  - itemId: chest_std
+    icon: {fileID: 21300000, guid: 7281ce678f1e9f54ba0d89ab627d0c30, type: 3}
+  - itemId: chest_super
+    icon: {fileID: 21300000, guid: b3c0642d819494242ab5936934ffb27b, type: 3}
+  - itemId: coins_large
+    icon: {fileID: 21300000, guid: bdcb57068b0923c4cb8c1d71516fd8db, type: 3}
+  - itemId: coins_small
+    icon: {fileID: 21300000, guid: bdcb57068b0923c4cb8c1d71516fd8db, type: 3}
+  - itemId: coins_std
+    icon: {fileID: 21300000, guid: bdcb57068b0923c4cb8c1d71516fd8db, type: 3}
+  - itemId: points_armor
+    icon: {fileID: 21300000, guid: 2f7a26a81e2e2e743929ecadbea8a36f, type: 3}
+  - itemId: points_knife
+    icon: {fileID: 21300000, guid: 22bd25257bbe4f04c855fbf4277162d6, type: 3}
+  - itemId: points_pistol
+    icon: {fileID: 21300000, guid: 22ad24a47812d8848b824d97705194f9, type: 3}
+  - itemId: points_rifle
+    icon: {fileID: 21300000, guid: 24b2b7790e5cfc546978598a77fd6c4c, type: 3}
+  - itemId: points_shotgun
+    icon: {fileID: 21300000, guid: ef236baf766be114aabdcf653d66f324, type: 3}
+  - itemId: points_smg
+    icon: {fileID: 21300000, guid: 881a56cdb49aa4b49a83f3d1e406eced, type: 3}
+  - itemId: points_sniper
+    icon: {fileID: 21300000, guid: 2b96aae037ef7704cbfc42ace491a1b4, type: 3}
+  - itemId: points_vest
+    icon: {fileID: 21300000, guid: 9a491c6a8ff1a804f8c70fb100ea3215, type: 3}
