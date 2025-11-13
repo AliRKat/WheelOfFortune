@@ -16,9 +16,8 @@ namespace Code.Managers {
 
         private bool _waitingForChoice = false;
         private bool _initialized = false;
-
-        // will be set properly when animation is added
         private bool _isSpinning = false;
+
         private WheelSkinDatabase _wheelSkinDatabase;
 
         private void Awake() {
@@ -48,40 +47,25 @@ namespace Code.Managers {
             InitializeCurrentZone();
         }
 
-        private void Update() {
-            HandleBombChoice();
-        }
-
+        // ---------------------------------------------------------
+        // REQUESTS FROM UI
+        // ---------------------------------------------------------
         public void RequestSpin() {
-            if (!_initialized) {
-                GameLogger.Warn(this, "RequestSpin", "Guard", "Spin ignored: not initialized");
+            if (!_initialized || _waitingForChoice || _isSpinning) {
+                GameLogger.Warn(this, "RequestSpin", "Guard", "Spin blocked");
                 return;
             }
 
-            if (_waitingForChoice) {
-                GameLogger.Warn(this, "RequestSpin", "Guard", "Spin ignored: awaiting bomb decision");
-                return;
-            }
+            _uiManager.UpdateExitButtonVisibility(true);
 
-            if (_isSpinning) {
-                GameLogger.Warn(this, "RequestSpin", "Guard", "Spin ignored: wheel already spinning");
-                return;
-            }
-
-            // Hide exit button while spinning
-            _isSpinning = true;
-            _uiManager.UpdateExitButtonVisibility(isSpinning: true);
-
-            DoSpin();
+            PerformSpin();
         }
 
         public void RequestExit() {
-            if (!_initialized) return;
-            if (_waitingForChoice) return;
-            if (_isSpinning) return;
+            if (!_initialized || _waitingForChoice || _isSpinning)
+                return;
 
             var zone = _zoneManager.GetCurrentZone();
-
             if (zone.type == ZoneType.Normal) {
                 GameLogger.Warn(this, "RequestExit", "Guard",
                     "Exit ignored: allowed only in Safe/Super zones");
@@ -96,7 +80,6 @@ namespace Code.Managers {
             _zoneManager.ResetToStart();
 
             InitializeCurrentZone();
-
             GameLogger.Log(this, "RequestExit", "Flow", "Game reset after exit.");
         }
 
@@ -115,99 +98,108 @@ namespace Code.Managers {
             InitializeCurrentZone();
         }
 
-        private void HandleBombChoice() {
-            if (!_waitingForChoice)
-                return;
-
-            if (Input.GetKeyDown(KeyCode.Y)) {
-                GameLogger.Log(this, "HandleBombChoice", "Bomb",
-                    "Player chose to PAY and continue same zone");
-
-                _zoneManager.RemoveBombFromCurrentZone();
-                _waitingForChoice = false;
-
-                InitializeCurrentZone();
-            } else if (Input.GetKeyDown(KeyCode.N)) {
-                GameLogger.Log(this, "HandleBombChoice", "Bomb",
-                    "Player chose NOT to pay → resetting progress");
-
-                _rewardManager.Reset();
-                _zoneManager.ResetToStart();
-                _waitingForChoice = false;
-
-                InitializeCurrentZone();
-            }
-        }
-
-        private void InitializeCurrentZone() {
-            var zone = _zoneManager.GetCurrentZone();
-
-            if (zone == null) {
-                GameLogger.Error(this, "InitializeCurrentZone", "ZoneNull",
-                    "ZoneConfig NOT FOUND!");
+        // ---------------------------------------------------------
+        // SPIN FLOW
+        // ---------------------------------------------------------
+        private void PerformSpin() {
+            if (!_initialized) {
+                GameLogger.Warn(this, "PerformSpin", "Guard", "Spin ignored: not initialized");
                 return;
             }
 
-            // wheel not spinning on zone init
-            _isSpinning = false;
-            _uiManager.UpdateExitButtonVisibility(isSpinning: false);
-
-            GameLogger.Log(this, "InitializeCurrentZone", "Zone",
-                $"Initializing zone {zone.zoneId} ({zone.type})");
-
-            _wheelView.ClearAll();
-
-            var wheelInitData = new WheelViewInitData();
-            var skin = _wheelSkinDatabase.GetSkin(zone.type);
-
-            wheelInitData.zoneConfig = zone;
-            wheelInitData.wheelSkinData = skin;
-
-            _wheelView.SetUp(wheelInitData);
-            _initialized = true;
-
-            _uiManager.RefreshZoneUI();
-            GameLogger.Log(this, "InitializeCurrentZone", "UI", "Zone UI refreshed");
-
-            _uiManager.RefreshRewardsUI();
-            GameLogger.Log(this, "InitializeCurrentZone", "UI", "Rewards UI refreshed");
-        }
-
-        private void DoSpin() {
-            if (!_initialized)
+            if (_waitingForChoice) {
+                GameLogger.Warn(this, "PerformSpin", "Guard", "Spin ignored: awaiting bomb decision");
                 return;
+            }
+
+            if (_isSpinning) {
+                GameLogger.Warn(this, "PerformSpin", "Guard", "Spin ignored: wheel already spinning");
+                return;
+            }
+
+            _isSpinning = true;
+            _uiManager.UpdateExitButtonVisibility(true);
 
             var zone = _zoneManager.GetCurrentZone();
 
-            GameLogger.Log(this, "DoSpin", "SpinStart",
-                $"Spinning wheel at zone {zone.zoneId}");
+            GameLogger.Log(this, "PerformSpin", "Start",
+                $"Logic spin for {zone.zoneId}");
 
             var result = _wheelLogic.Spin(zone);
 
+            int winIndex = result.WinningIndex;
+            GameLogger.Log(this, "PerformSpin", "Result",
+                $"Logic selected slice index = {winIndex}");
+
+            // Wheel animates to the EXACT winning index
+            _wheelView.SpinToIndex(
+                winIndex,
+                duration: 2.0f,
+                onComplete: () => ResolveSpin(result)
+            );
+        }
+
+        private void ResolveSpin(SpinResult result) {
+            GameLogger.Log(this, "ResolveSpin", "AnimDone",
+                "Spin animation finished");
+
+            // wheel ready for next action
+            _isSpinning = false;
+            _uiManager.UpdateExitButtonVisibility(false);
+
+            // BOMB case: no reward, show popup
             if (result.IsBomb) {
-                GameLogger.Warn(this, "DoSpin", "Bomb",
-                    "Bomb hit → waiting for player decision");
+                GameLogger.Warn(this, "ResolveSpin", "Bomb",
+                    "Bomb hit → waiting for UI decision");
 
                 _waitingForChoice = true;
                 GameEvents.BombHit?.Invoke();
                 return;
             }
 
+            // NON-BOMB → apply reward AFTER animation
             _rewardManager.Add(result.RewardData, result.RewardAmount);
 
-            GameLogger.Log(this, "DoSpin", "Reward",
+            GameLogger.Log(this, "ResolveSpin", "Reward",
                 $"Gained +{result.RewardAmount} ({result.RewardData.itemId})");
 
             _uiManager.RefreshRewardsUI();
-            GameLogger.Log(this, "DoSpin", "UI", "Rewards UI updated");
 
+            // advance to next zone
             _zoneManager.AdvanceZone();
-            GameLogger.Log(this, "DoSpin", "Zone", "Advancing to next zone");
-
-            // end spin animation — so exit button can reappear if allowed
-            _isSpinning = false;
 
             InitializeCurrentZone();
+        }
+
+        // ---------------------------------------------------------
+        // ZONE INIT
+        // ---------------------------------------------------------
+        private void InitializeCurrentZone() {
+            var zone = _zoneManager.GetCurrentZone();
+            if (zone == null) {
+                GameLogger.Error(this, "InitializeCurrentZone", "ZoneNull",
+                    "ZoneConfig NOT FOUND!");
+                return;
+            }
+
+            _isSpinning = false;
+            _uiManager.UpdateExitButtonVisibility(false);
+
+            GameLogger.Log(this, "InitializeCurrentZone", "Zone",
+                $"Initializing zone {zone.zoneId} ({zone.type})");
+
+            _wheelView.ClearAll();
+
+            var wheelInitData = new WheelViewInitData {
+                zoneConfig = zone,
+                wheelSkinData = _wheelSkinDatabase.GetSkin(zone.type)
+            };
+
+            _wheelView.SetUp(wheelInitData);
+            _initialized = true;
+
+            _uiManager.RefreshZoneUI();
+            _uiManager.RefreshRewardsUI();
         }
     }
 }
