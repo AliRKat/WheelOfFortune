@@ -157,7 +157,7 @@ namespace Code.Managers {
             float vfxDelay = 0.15f;
             DG.Tweening.DOVirtual.DelayedCall(vfxDelay, () => {
                 var winningSlot = _wheelView.GetWinningSlot().transform;
-                _uiManager.PlayVFX(result.RewardData.icon, winningSlot);
+                _uiManager.PlayVFX(result.RewardData.icon, winningSlot, result.RewardData.itemId);
             });
 
             // delay before next zone

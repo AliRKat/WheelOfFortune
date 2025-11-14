@@ -15,13 +15,19 @@ namespace Code.UI {
 
             foreach (var dto in items) {
                 var inst = Instantiate(_itemPrefab, _contentRoot);
-                inst.Set(dto.Icon, dto.Amount.ToString());
+                inst.Set(dto.Icon, dto.Amount.ToString(), dto.Id);
                 _spawned.Add(inst);
             }
         }
 
-        public Transform GetLastSpawned() {
-            return _spawned[_spawned.Count - 1].transform;
+        public Transform GetSpawnedWithId(string id) {
+            foreach (var item in _spawned) {
+                if(item.GetId() == id) {
+                    return item.transform;
+                }
+            }
+
+            return null;
         }
 
         private void Clear() {

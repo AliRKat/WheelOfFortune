@@ -90,7 +90,7 @@ namespace Code.Managers {
             _exitButton.gameObject.SetActive(show);
         }
 
-        public void PlayVFX(Sprite icon, Transform fromPoint) {
+        public void PlayVFX(Sprite icon, Transform fromPoint, string rewardId) {
             if (icon == null || fromPoint == null)
                 return;
 
@@ -107,7 +107,7 @@ namespace Code.Managers {
 
                 Transform rt = inst.transform;
 
-                Transform target = _rewardsUI.GetLastSpawned();
+                Transform target = _rewardsUI.GetSpawnedWithId(rewardId);
                 Vector3 startWorld = fromPoint.position;
                 Vector3 targetWorld = target.position;
 
@@ -164,7 +164,8 @@ namespace Code.Managers {
 
                 dtos.Add(new RewardItemDTO {
                     Icon = icon,
-                    Amount = amount
+                    Amount = amount,
+                    Id = id
                 });
             }
 
