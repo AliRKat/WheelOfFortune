@@ -107,9 +107,10 @@ namespace Code.Managers {
 
                 Transform rt = inst.transform;
 
-                Transform target = _rewardsUI.GetSpawnedWithId(rewardId);
+                RewardsUIItem target = _rewardsUI.GetSpawnedWithId(rewardId);
+                Transform targetTransform = target.transform;
                 Vector3 startWorld = fromPoint.position;
-                Vector3 targetWorld = target.position;
+                Vector3 targetWorld = targetTransform.position;
 
                 rt.position = startWorld;
 
@@ -121,7 +122,11 @@ namespace Code.Managers {
                 seq.Append(rt.DOMove(burstWorld, popDuration).SetEase(Ease.OutQuad));
                 seq.Append(rt.DOMove(targetWorld, flyDuration).SetEase(Ease.InQuad));
 
-                seq.OnComplete(() => Destroy(inst.gameObject));
+                seq.OnComplete(() => {
+                    target.PlayBumpEffect();
+                    // target.AnimateAmountChange();
+                    Destroy(inst.gameObject);
+                } );
             }
         }
 

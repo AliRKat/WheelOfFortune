@@ -80,6 +80,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _icon: {fileID: 3952213387364660569}
   _text: {fileID: 3952213386902759101}
+  _id: 
+  _prevAmount: 0
+  _currentAmount: 0
 --- !u!1 &3952213386902759103
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,7 +149,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 500
+  m_text: 00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 13d17049fb4d4164282641934e76c706, type: 2}
   m_sharedMaterial: {fileID: 7002052347983954252, guid: 13d17049fb4d4164282641934e76c706, type: 2}
