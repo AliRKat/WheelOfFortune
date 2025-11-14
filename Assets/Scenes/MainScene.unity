@@ -122,6 +122,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &33839287 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8397795613387311189, guid: 8a3e9ee7165eff3478fc15dac09683e8, type: 3}
+  m_PrefabInstance: {fileID: 8397795611565926841}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &85912900
 GameObject:
   m_ObjectHideFlags: 0
@@ -951,12 +956,27 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8397795613387311177, guid: 8a3e9ee7165eff3478fc15dac09683e8, type: 3}
   m_PrefabInstance: {fileID: 8397795611565926841}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 33839287}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1945133553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33839287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 0.5}
+  m_EffectDistance: {x: 6, y: 6}
+  m_UseGraphicAlpha: 1
 --- !u!1 &2132193094
 GameObject:
   m_ObjectHideFlags: 0
@@ -1329,6 +1349,18 @@ PrefabInstance:
     - target: {fileID: 8397795613387311189, guid: 8a3e9ee7165eff3478fc15dac09683e8, type: 3}
       propertyPath: m_Name
       value: Button_Spin
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397795613387311191, guid: 8a3e9ee7165eff3478fc15dac09683e8, type: 3}
+      propertyPath: m_Color.b
+      value: 0.10412206
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397795613387311191, guid: 8a3e9ee7165eff3478fc15dac09683e8, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397795613387311191, guid: 8a3e9ee7165eff3478fc15dac09683e8, type: 3}
+      propertyPath: m_Color.r
+      value: 0.0990566
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a3e9ee7165eff3478fc15dac09683e8, type: 3}

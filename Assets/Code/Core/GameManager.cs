@@ -51,7 +51,12 @@ namespace Code.Managers {
         // REQUESTS FROM UI
         // ---------------------------------------------------------
         public void RequestSpin() {
-            if (!_initialized || _waitingForChoice || _isSpinning) {
+            if (_isSpinning) {
+                GameLogger.Warn(this, "RequestSpin", "Guard", "Wheel is already spinning");
+                return;
+            }
+
+            if (!_initialized || _waitingForChoice) {
                 GameLogger.Warn(this, "RequestSpin", "Guard", "Spin blocked");
                 return;
             }
@@ -130,8 +135,6 @@ namespace Code.Managers {
             GameLogger.Log(this, "ResolveSpin", "AnimDone",
                 "Spin animation finished");
 
-            _isSpinning = false;
-
             if (result.IsBomb) {
                 GameLogger.Warn(this, "ResolveSpin", "Bomb",
                     "Bomb hit → waiting for UI decision");
@@ -170,7 +173,6 @@ namespace Code.Managers {
                 return;
             }
 
-            _isSpinning = false;
             _uiManager.UpdateExitButtonVisibility(false);
 
             GameLogger.Log(this, "InitializeCurrentZone", "Zone",
@@ -188,6 +190,8 @@ namespace Code.Managers {
 
             _uiManager.RefreshZoneUI();
             _uiManager.RefreshRewardsUI();
+
+            _isSpinning = false;
         }
     }
 }
