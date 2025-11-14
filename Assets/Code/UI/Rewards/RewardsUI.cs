@@ -10,9 +10,6 @@ namespace Code.UI {
 
         private readonly List<RewardsUIItem> _spawned = new();
 
-        public void Show() => _root.SetActive(true);
-        public void Hide() => _root.SetActive(false);
-
         public void Populate(List<RewardItemDTO> items) {
             Clear();
 

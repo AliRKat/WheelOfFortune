@@ -63,13 +63,6 @@ namespace Code.Managers {
             if (!_initialized || _waitingForChoice || _isSpinning)
                 return;
 
-            var zone = _zoneManager.GetCurrentZone();
-            if (zone.type == ZoneType.Normal) {
-                GameLogger.Warn(this, "RequestExit", "Guard",
-                    "Exit ignored: allowed only in Safe/Super zones");
-                return;
-            }
-
             var collectedString = _rewardManager.GetEarningsString();
             GameLogger.Log(this, "RequestExit", "Collect",
                 $"Player exited. Earnings: {collectedString}");

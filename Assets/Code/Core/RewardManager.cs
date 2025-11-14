@@ -43,9 +43,4 @@ namespace Code.Managers {
         }
     }
 
-    public class RewardItemDTO {
-        public Sprite Icon;
-        public int Amount;
-    }
-
 }
