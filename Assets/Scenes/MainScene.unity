@@ -254,6 +254,7 @@ MonoBehaviour:
   _zoneProgressUI: {fileID: 746467493}
   _bombPopupPrefab: {fileID: 58413622013945227, guid: c48863fc412a99046970ea97e9cc12cd, type: 3}
   _rewardMap: {fileID: 11400000, guid: c045d8a8940b71e4bb745604db3930a9, type: 2}
+  _iconPrefab: {fileID: 6920008616278502407, guid: 73118ccff37c61442afcdd3af3a255d3, type: 3}
 --- !u!1 &493069840
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,7 +395,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 724767653}
-  - component: {fileID: 724767654}
   m_Layer: 5
   m_Name: Panel_BGs
   m_TagString: Untagged
@@ -423,14 +423,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &724767654
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 724767652}
-  m_CullTransparentMesh: 1
 --- !u!224 &746467492 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6451952053753989615, guid: 10d2a8040e0b8b5479d090f402ed0703, type: 3}

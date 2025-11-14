@@ -21,6 +21,7 @@ public class WheelView : MonoBehaviour {
     [SerializeField] private Image _baseWheelImage;
     [SerializeField] private Image _indicatorImage;
     private Tweener _spinTween;
+    private WheelSlotController _winningSlot;
 
     // ------------------------------------------------------------
     // SETUP
@@ -41,6 +42,10 @@ public class WheelView : MonoBehaviour {
 
         ApplySkin(skinData);
         ApplySlots(zone);
+    }
+
+    public WheelSlotController GetWinningSlot() {
+        return _winningSlot;
     }
 
     private void ApplySlots(ZoneConfig zone) {
@@ -90,6 +95,7 @@ public class WheelView : MonoBehaviour {
 
         // Kill any previous tween and hard reset rotation.
         _spinTween?.Kill();
+        _winningSlot = _slots[targetIndex];
         _wheelVisual.localEulerAngles = Vector3.zero;
 
         // Get the slot transform for the winning index.

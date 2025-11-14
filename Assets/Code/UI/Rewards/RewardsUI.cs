@@ -20,6 +20,10 @@ namespace Code.UI {
             }
         }
 
+        public Transform GetLastSpawned() {
+            return _spawned[_spawned.Count - 1].transform;
+        }
+
         private void Clear() {
             foreach (var s in _spawned)
                 Destroy(s.gameObject);

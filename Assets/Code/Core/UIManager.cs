@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Code.Core;
 using Code.UI;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,7 @@ namespace Code.Managers {
 
         [Header("Mapping")]
         [SerializeField] private RewardUIMap _rewardMap;
+        [SerializeField] private Image _iconPrefab;
 
         private RewardManager _rewardManager;
         private ZoneManager _zoneManager;
@@ -88,6 +90,42 @@ namespace Code.Managers {
             _exitButton.gameObject.SetActive(show);
         }
 
+        public void PlayVFX(Sprite icon, Transform fromPoint) {
+            if (icon == null || fromPoint == null)
+                return;
+
+            int count = 6;
+            float radius = 60f;
+            float popDuration = 0.2f;
+            float flyDuration = 0.2f;
+
+            Image prefab = _iconPrefab;
+
+            for (int i = 0; i < count; i++) {
+                Image inst = Instantiate(prefab, _popupRoot);
+                inst.sprite = icon;
+
+                Transform rt = inst.transform;
+
+                Transform target = _rewardsUI.GetLastSpawned();
+                Vector3 startWorld = fromPoint.position;
+                Vector3 targetWorld = target.position;
+
+                rt.position = startWorld;
+
+                Vector2 burstOffset = Random.insideUnitCircle * radius;
+                Vector3 burstWorld = startWorld + new Vector3(burstOffset.x, burstOffset.y, 0);
+
+                Sequence seq = DOTween.Sequence();
+
+                seq.Append(rt.DOMove(burstWorld, popDuration).SetEase(Ease.OutQuad));
+                seq.Append(rt.DOMove(targetWorld, flyDuration).SetEase(Ease.InQuad));
+
+                seq.OnComplete(() => Destroy(inst.gameObject));
+            }
+        }
+
+
         private void OnSpinStarted() {
             UpdateExitButtonVisibility(true);
         }
@@ -95,7 +133,7 @@ namespace Code.Managers {
         private void OnSpinEnded() {
             UpdateExitButtonVisibility(false);
         }
-        
+
         private void OnBombHit() {
             UpdateExitButtonVisibility(true);
             InstantiateBombPopup();

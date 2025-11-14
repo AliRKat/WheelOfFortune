@@ -150,11 +150,18 @@ namespace Code.Managers {
             GameLogger.Log(this, "ResolveSpin", "Reward",
                 $"Gained +{result.RewardAmount} ({result.RewardData.itemId})");
 
+            ;
+
             _uiManager.RefreshRewardsUI();
+
+            float vfxDelay = 0.15f;
+            DG.Tweening.DOVirtual.DelayedCall(vfxDelay, () => {
+                var winningSlot = _wheelView.GetWinningSlot().transform;
+                _uiManager.PlayVFX(result.RewardData.icon, winningSlot);
+            });
 
             // delay before next zone
             float postDelay = 0.8f;
-
             DG.Tweening.DOVirtual.DelayedCall(postDelay, () => {
                 // advance to next zone
                 _zoneManager.AdvanceZone();
