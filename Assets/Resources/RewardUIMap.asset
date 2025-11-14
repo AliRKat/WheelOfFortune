@@ -13,13 +13,7 @@ MonoBehaviour:
   m_Name: RewardUIMap
   m_EditorClassIdentifier: 
   entries:
-  - itemId: bomb
-    icon: {fileID: 21300000, guid: 361a1626daeb14a4a95704cb324694a3, type: 3}
-  - itemId: cash_large
-    icon: {fileID: 21300000, guid: 91c14d5a579b92047a3eb1faacabd8da, type: 3}
-  - itemId: cash_small
-    icon: {fileID: 21300000, guid: 91c14d5a579b92047a3eb1faacabd8da, type: 3}
-  - itemId: cash_std
+  - itemId: cash
     icon: {fileID: 21300000, guid: 91c14d5a579b92047a3eb1faacabd8da, type: 3}
   - itemId: chest_big
     icon: {fileID: 21300000, guid: ab11eefa697df1d4f98dd38681f4bdc5, type: 3}
@@ -35,11 +29,7 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: 7281ce678f1e9f54ba0d89ab627d0c30, type: 3}
   - itemId: chest_super
     icon: {fileID: 21300000, guid: b3c0642d819494242ab5936934ffb27b, type: 3}
-  - itemId: coins_large
-    icon: {fileID: 21300000, guid: bdcb57068b0923c4cb8c1d71516fd8db, type: 3}
-  - itemId: coins_small
-    icon: {fileID: 21300000, guid: bdcb57068b0923c4cb8c1d71516fd8db, type: 3}
-  - itemId: coins_std
+  - itemId: coins
     icon: {fileID: 21300000, guid: bdcb57068b0923c4cb8c1d71516fd8db, type: 3}
   - itemId: points_armor
     icon: {fileID: 21300000, guid: 2f7a26a81e2e2e743929ecadbea8a36f, type: 3}

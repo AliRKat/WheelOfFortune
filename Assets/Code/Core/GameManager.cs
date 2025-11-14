@@ -130,10 +130,8 @@ namespace Code.Managers {
             GameLogger.Log(this, "ResolveSpin", "AnimDone",
                 "Spin animation finished");
 
-            // wheel ready for next action
             _isSpinning = false;
 
-            // BOMB case: no reward, show popup
             if (result.IsBomb) {
                 GameLogger.Warn(this, "ResolveSpin", "Bomb",
                     "Bomb hit → waiting for UI decision");
@@ -151,10 +149,14 @@ namespace Code.Managers {
 
             _uiManager.RefreshRewardsUI();
 
-            // advance to next zone
-            _zoneManager.AdvanceZone();
+            // delay before next zone
+            float postDelay = 0.8f;
 
-            InitializeCurrentZone();
+            DG.Tweening.DOVirtual.DelayedCall(postDelay, () => {
+                // advance to next zone
+                _zoneManager.AdvanceZone();
+                InitializeCurrentZone();
+            });
         }
 
         // ---------------------------------------------------------
