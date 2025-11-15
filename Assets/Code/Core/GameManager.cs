@@ -1,4 +1,3 @@
-using Code.UI;
 using UnityEngine;
 using Code.Core;
 
@@ -13,12 +12,13 @@ namespace Code.Managers {
         private WheelLogic _wheelLogic;
         private ZoneManager _zoneManager;
         private RewardManager _rewardManager;
+        private WheelSkinDatabase _wheelSkinDatabase;
 
         private bool _waitingForChoice = false;
         private bool _initialized = false;
         private bool _isSpinning = false;
 
-        private WheelSkinDatabase _wheelSkinDatabase;
+        #region Unity Lifecycle
 
         private void Awake() {
             if (Instance != null && Instance != this) {
@@ -27,6 +27,7 @@ namespace Code.Managers {
             }
 
             Instance = this;
+            DontDestroyOnLoad(gameObject);
 
             _wheelLogic = new WheelLogic();
             _zoneManager = new ZoneManager();
@@ -47,16 +48,15 @@ namespace Code.Managers {
             InitializeCurrentZone();
         }
 
-        // ---------------------------------------------------------
-        // REQUESTS FROM UI
-        // ---------------------------------------------------------
-        public void RequestSpin() {
-            if (_isSpinning) {
-                GameLogger.Warn(this, "RequestSpin", "Guard", "Wheel is already spinning");
-                return;
-            }
+        #endregion
 
-            if (!_initialized || _waitingForChoice) {
+        #region Public UI Requests
+
+        /// <summary>
+        /// Requests a wheel spin if the game state allows it.
+        /// </summary>
+        public void RequestSpin() {
+            if (!CanSpin()) {
                 GameLogger.Warn(this, "RequestSpin", "Guard", "Spin blocked");
                 return;
             }
@@ -64,11 +64,15 @@ namespace Code.Managers {
             PerformSpin();
         }
 
+        /// <summary>
+        /// Attempts to exit the current run and reset the game.
+        /// </summary>
         public void RequestExit() {
             if (!_initialized || _waitingForChoice || _isSpinning)
                 return;
 
             var collectedString = _rewardManager.GetEarningsString();
+
             GameLogger.Log(this, "RequestExit", "Collect",
                 $"Player exited. Earnings: {collectedString}");
 
@@ -76,40 +80,47 @@ namespace Code.Managers {
             _zoneManager.ResetToStart();
 
             InitializeCurrentZone();
-            GameLogger.Log(this, "RequestExit", "Flow", "Game reset after exit.");
+
+            GameLogger.Log(this, "RequestExit", "Flow",
+                "Game reset after exit.");
         }
 
+        /// <summary>
+        /// Resolves the bomb choice and continues or resets the game.
+        /// </summary>
         public void ResolveBombChoice(bool payToContinue) {
             _waitingForChoice = false;
 
             if (payToContinue) {
-                _zoneManager.RemoveBombFromCurrentZone();
-                GameLogger.Log(this, "ResolveBombChoice", "Bomb", "Player continued (paid)");
+                GameLogger.Log(this, "ResolveBombChoice", "Bomb",
+                    "Player continued (paid)");
             } else {
                 _rewardManager.Reset();
                 _zoneManager.ResetToStart();
-                GameLogger.Log(this, "ResolveBombChoice", "Bomb", "Player quit (lost rewards)");
+                GameLogger.Log(this, "ResolveBombChoice", "Bomb",
+                    "Player quit (lost rewards)");
             }
 
             InitializeCurrentZone();
         }
 
-        // ---------------------------------------------------------
-        // SPIN FLOW
-        // ---------------------------------------------------------
+        #endregion
+
+        #region Spin Flow
+
+        /// <summary>
+        /// Returns true if all conditions allow a spin action.
+        /// </summary>
+        private bool CanSpin() {
+            if (!_initialized) return false;
+            if (_waitingForChoice) return false;
+            if (_isSpinning) return false;
+            return true;
+        }
+
         private void PerformSpin() {
-            if (!_initialized) {
-                GameLogger.Warn(this, "PerformSpin", "Guard", "Spin ignored: not initialized");
-                return;
-            }
-
-            if (_waitingForChoice) {
-                GameLogger.Warn(this, "PerformSpin", "Guard", "Spin ignored: awaiting bomb decision");
-                return;
-            }
-
-            if (_isSpinning) {
-                GameLogger.Warn(this, "PerformSpin", "Guard", "Spin ignored: wheel already spinning");
+            if (!CanSpin()) {
+                GameLogger.Warn(this, "PerformSpin", "Guard", "Spin ignored due to state");
                 return;
             }
 
@@ -122,13 +133,12 @@ namespace Code.Managers {
                 $"Logic spin for {zone.zoneId}");
 
             var result = _wheelLogic.Spin(zone);
-
             int winIndex = result.WinningIndex;
+
             GameLogger.Log(this, "PerformSpin", "Result",
                 $"Logic selected slice index = {winIndex}");
 
-            // Wheel animates to the EXACT winning index
-            _wheelView.SpinToIndex(result.WinningIndex, 2f, () => ResolveSpin(result));
+            _wheelView.SpinToIndex(winIndex, 2f, () => ResolveSpin(result));
         }
 
         private void ResolveSpin(SpinResult result) {
@@ -144,36 +154,33 @@ namespace Code.Managers {
                 return;
             }
 
-            // NON-BOMB → apply reward AFTER animation
             _rewardManager.Add(result.RewardData, result.RewardAmount);
 
             GameLogger.Log(this, "ResolveSpin", "Reward",
                 $"Gained +{result.RewardAmount} ({result.RewardData.itemId})");
 
-            ;
-
             _uiManager.RefreshRewardsUI();
 
-            float vfxDelay = 0.15f;
+            const float vfxDelay = 0.15f;
             DG.Tweening.DOVirtual.DelayedCall(vfxDelay, () => {
-                var winningSlot = _wheelView.GetWinningSlot().transform;
-                _uiManager.PlayVFX(result.RewardData.icon, winningSlot, result.RewardData.itemId);
+                var slotTransform = _wheelView.GetWinningSlot().transform;
+                _uiManager.PlayVFX(result.RewardData.icon, slotTransform, result.RewardData.itemId);
             });
 
-            // delay before next zone
-            float postDelay = 0.8f;
+            const float postDelay = 0.8f;
             DG.Tweening.DOVirtual.DelayedCall(postDelay, () => {
-                // advance to next zone
                 _zoneManager.AdvanceZone();
                 InitializeCurrentZone();
             });
         }
 
-        // ---------------------------------------------------------
-        // ZONE INIT
-        // ---------------------------------------------------------
+        #endregion
+
+        #region Zone Initialization
+
         private void InitializeCurrentZone() {
             var zone = _zoneManager.GetCurrentZone();
+
             if (zone == null) {
                 GameLogger.Error(this, "InitializeCurrentZone", "ZoneNull",
                     "ZoneConfig NOT FOUND!");
@@ -193,6 +200,7 @@ namespace Code.Managers {
             };
 
             _wheelView.SetUp(wheelInitData);
+
             _initialized = true;
 
             _uiManager.RefreshZoneUI();
@@ -200,5 +208,7 @@ namespace Code.Managers {
 
             _isSpinning = false;
         }
+
+        #endregion
     }
 }

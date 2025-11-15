@@ -16,26 +16,26 @@ MonoBehaviour:
   type: 1
   slices:
   - isBomb: 0
-    itemData: {fileID: 11400000, guid: 47fb44cc5714d6e4aaaf621e9b281cc7, type: 2}
-    customAmount: 15
+    itemData: {fileID: 11400000, guid: bac3033e5a1560048847122bab886887, type: 2}
+    customAmount: 10
   - isBomb: 0
     itemData: {fileID: 11400000, guid: 255ee84cc6d5b814d8dd455a3a2560a6, type: 2}
-    customAmount: 67
+    customAmount: 73
   - isBomb: 0
-    itemData: {fileID: 11400000, guid: 96c493bda9ddd254c80352dd55cd0b66, type: 2}
-    customAmount: 19
+    itemData: {fileID: 11400000, guid: 92e21136ee56e7046b031031d906e337, type: 2}
+    customAmount: 44
   - isBomb: 0
-    itemData: {fileID: 11400000, guid: 31d53005931f54f49b822f026eb0800f, type: 2}
-    customAmount: 34
-  - isBomb: 0
-    itemData: {fileID: 11400000, guid: 96c493bda9ddd254c80352dd55cd0b66, type: 2}
-    customAmount: 19
+    itemData: {fileID: 11400000, guid: 1b6c2ca2d987cb744b35bf770e83741e, type: 2}
+    customAmount: 18
   - isBomb: 0
     itemData: {fileID: 11400000, guid: 31d53005931f54f49b822f026eb0800f, type: 2}
-    customAmount: 41
+    customAmount: 51
   - isBomb: 0
     itemData: {fileID: 11400000, guid: bac3033e5a1560048847122bab886887, type: 2}
-    customAmount: 9
+    customAmount: 11
   - isBomb: 0
-    itemData: {fileID: 11400000, guid: 252364b75847e2f4ea66cd43ff777660, type: 2}
-    customAmount: 31
+    itemData: {fileID: 11400000, guid: 7297d7606ee5d2a46bffae8cba9df30a, type: 2}
+    customAmount: 34
+  - isBomb: 0
+    itemData: {fileID: 11400000, guid: 792f4de465319b34ca456c0d76d27a9d, type: 2}
+    customAmount: 54

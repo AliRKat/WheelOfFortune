@@ -5,17 +5,17 @@ using DG.Tweening;
 
 namespace Code.UI {
     public class RewardsUIItem : MonoBehaviour {
-        [SerializeField] private Image _icon;
-        [SerializeField] private TMP_Text _text;
+        [SerializeField] private Image _icon_value;
+        [SerializeField] private TMP_Text _text_value;
         [SerializeField] private string _id;
         // [SerializeField] private int _prevAmount;
         // [SerializeField] private int _currentAmount;
         // private Tween _countTween;
 
         public void Set(Sprite icon, int newAmount, string category) {
-            _icon.sprite = icon;
+            _icon_value.sprite = icon;
             _id = category;
-            _text.text = newAmount.ToString();
+            _text_value.text = newAmount.ToString();
 
             // _prevAmount = _currentAmount;
             //_currentAmount = newAmount;
@@ -26,11 +26,11 @@ namespace Code.UI {
         }
 
         public void PlayBumpEffect() {
-            _icon.transform.localScale = Vector3.one;
+            _icon_value.transform.localScale = Vector3.one;
 
             Sequence seq = DOTween.Sequence();
-            seq.Append(_icon.transform.DOScale(1.15f, 0.08f).SetEase(Ease.OutQuad));
-            seq.Append(_icon.transform.DOScale(1f, 0.08f).SetEase(Ease.InQuad));
+            seq.Append(_icon_value.transform.DOScale(1.15f, 0.08f).SetEase(Ease.OutQuad));
+            seq.Append(_icon_value.transform.DOScale(1f, 0.08f).SetEase(Ease.InQuad));
         }
 
         // public void AnimateAmountChange() {

@@ -16,26 +16,26 @@ MonoBehaviour:
   type: 1
   slices:
   - isBomb: 0
-    itemData: {fileID: 11400000, guid: 31d53005931f54f49b822f026eb0800f, type: 2}
-    customAmount: 56
-  - isBomb: 0
-    itemData: {fileID: 11400000, guid: 1b6c2ca2d987cb744b35bf770e83741e, type: 2}
-    customAmount: 24
-  - isBomb: 0
-    itemData: {fileID: 11400000, guid: 208963033320ca44f8316531cdd4d995, type: 2}
+    itemData: {fileID: 11400000, guid: ae40c92c2b558ee40889d480d1e637d9, type: 2}
     customAmount: 53
   - isBomb: 0
-    itemData: {fileID: 11400000, guid: bac3033e5a1560048847122bab886887, type: 2}
-    customAmount: 16
+    itemData: {fileID: 11400000, guid: a8d769f878f662a4f816da8074dafd9b, type: 2}
+    customAmount: 53
   - isBomb: 0
-    itemData: {fileID: 11400000, guid: 96c493bda9ddd254c80352dd55cd0b66, type: 2}
-    customAmount: 29
+    itemData: {fileID: 11400000, guid: 92e21136ee56e7046b031031d906e337, type: 2}
+    customAmount: 136
   - isBomb: 0
-    itemData: {fileID: 11400000, guid: 255ee84cc6d5b814d8dd455a3a2560a6, type: 2}
-    customAmount: 116
+    itemData: {fileID: 11400000, guid: 451ea883fb53f6d4197deeb814ee81ba, type: 2}
+    customAmount: 173
   - isBomb: 0
-    itemData: {fileID: 11400000, guid: ae40c92c2b558ee40889d480d1e637d9, type: 2}
-    customAmount: 31
+    itemData: {fileID: 11400000, guid: 1b6c2ca2d987cb744b35bf770e83741e, type: 2}
+    customAmount: 64
   - isBomb: 0
     itemData: {fileID: 11400000, guid: 439b3781028772c46b8f0d6c50a6a4b5, type: 2}
-    customAmount: 141
+    customAmount: 221
+  - isBomb: 0
+    itemData: {fileID: 11400000, guid: 451ea883fb53f6d4197deeb814ee81ba, type: 2}
+    customAmount: 199
+  - isBomb: 0
+    itemData: {fileID: 11400000, guid: 7297d7606ee5d2a46bffae8cba9df30a, type: 2}
+    customAmount: 85

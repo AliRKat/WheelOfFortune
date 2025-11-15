@@ -2,15 +2,26 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
+using Code.Core;
 
 public class RewardIconMapAutoBuilder : EditorWindow {
-    private RewardUIMap _targetMap;
-    private string _dataFolder = "Assets/Resources/WheelItemData"; // default
 
+    private RewardUIMap _targetMap;
+    private string _dataFolder = "Assets/Resources/WheelItemData";
+
+    #region Menu
+
+    /// <summary>
+    /// Opens the Reward Icon Map Builder editor window.
+    /// </summary>
     [MenuItem("Tools/Reward Icon Map Builder")]
     public static void Open() {
         GetWindow<RewardIconMapAutoBuilder>("Reward Icon Map Builder").Show();
     }
+
+    #endregion
+
+    #region GUI
 
     private void OnGUI() {
         GUILayout.Label("Auto-Populate RewardUIMap", EditorStyles.boldLabel);
@@ -31,16 +42,26 @@ public class RewardIconMapAutoBuilder : EditorWindow {
         GUI.enabled = true;
     }
 
+    #endregion
+
+    #region Build Logic
+
+    /// <summary>
+    /// Rebuilds the RewardUIMap by scanning WheelItemData assets in the configured folder,
+    /// generating entries for all non-bomb items with a valid itemId.
+    /// </summary>
     private void BuildMap() {
         if (_targetMap == null) {
-            Debug.LogError("No RewardUIMap selected.");
+            GameLogger.Error(this, "BuildMap", "Validation",
+                "No RewardUIMap asset assigned.");
             return;
         }
 
         string[] guids = AssetDatabase.FindAssets("t:WheelItemData", new[] { _dataFolder });
 
         if (guids.Length == 0) {
-            Debug.LogWarning("No WheelItemData found in folder: " + _dataFolder);
+            GameLogger.Warn(this, "BuildMap", "AssetScan",
+                $"No WheelItemData assets found in folder: {_dataFolder}");
             return;
         }
 
@@ -49,34 +70,48 @@ public class RewardIconMapAutoBuilder : EditorWindow {
         var newEntries = new List<RewardUIMap.Entry>();
 
         foreach (string guid in guids) {
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            var wheelItem = AssetDatabase.LoadAssetAtPath<WheelItemData>(path);
-
-            if (wheelItem == null)
-                continue;
-
-            if (wheelItem.isBomb)
-                continue; // <-- EXCLUDE BOMB
-
-            if (string.IsNullOrEmpty(wheelItem.itemId)) {
-                Debug.LogWarning($"WheelItemData at {path} has no itemId.");
-                continue;
-            }
-
-            var entry = new RewardUIMap.Entry {
-                itemId = wheelItem.itemId,
-                icon = wheelItem.icon
-            };
-
-            newEntries.Add(entry);
+            ProcessWheelItem(guid, newEntries);
         }
 
-        _targetMap.entries = newEntries;
+        ApplyEntries(newEntries);
+    }
+
+    #endregion
+
+    #region Processing
+
+    private void ProcessWheelItem(string guid, List<RewardUIMap.Entry> list) {
+        string path = AssetDatabase.GUIDToAssetPath(guid);
+        var wheelItem = AssetDatabase.LoadAssetAtPath<WheelItemData>(path);
+
+        if (wheelItem == null)
+            return;
+
+        if (wheelItem.isBomb)
+            return; // Exclude bomb items
+
+        if (string.IsNullOrEmpty(wheelItem.itemId)) {
+            GameLogger.Warn(this, "ProcessWheelItem", "MissingId",
+                $"WheelItemData at {path} has no itemId.");
+            return;
+        }
+
+        list.Add(new RewardUIMap.Entry {
+            itemId = wheelItem.itemId,
+            icon = wheelItem.icon
+        });
+    }
+
+    private void ApplyEntries(List<RewardUIMap.Entry> entries) {
+        _targetMap.entries = entries;
 
         EditorUtility.SetDirty(_targetMap);
         AssetDatabase.SaveAssets();
 
-        Debug.Log($"RewardUIMap updated. {newEntries.Count} entries added.");
+        GameLogger.Log(this, "ApplyEntries", "Result",
+            $"RewardUIMap updated. {entries.Count} entries added.");
     }
+
+    #endregion
 }
 #endif
