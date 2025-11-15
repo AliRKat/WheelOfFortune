@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8687665450459132341}
   - component: {fileID: 4697207658137727820}
+  - component: {fileID: 7466635360243514021}
   m_Layer: 5
   m_Name: ui_zoneIndicator_text
   m_TagString: Untagged
@@ -51,6 +52,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _label: {fileID: 8642133088861228994}
+--- !u!225 &7466635360243514021
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6839225941065953134}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &7078324010473810293
 GameObject:
   m_ObjectHideFlags: 0
