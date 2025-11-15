@@ -31,11 +31,12 @@ The project demonstrates clean architecture, ScriptableObject-driven data, scala
 ---
 
 ## 🖥 UI Systems
-- **UIManager** — updates UI, handles buttons, plays VFX.  
-- **RewardsUI** — efficient incremental updates; no destroy/rebuild spam.  
-- **RewardsUIItem** — animated count-up; bump effect on reward.  
-- **ZoneProgressUI** — animated sliding strip of zone numbers.  
-- **BombPopupUI** — DOTween intro/outro.
+
+- **UIManager** — Connects gameplay events to UI, updates panels, controls button states, and triggers visual effects.
+- **RewardsUI** — Shows the player’s collected rewards and updates them as new items are earned.
+- **RewardsUIItem** — Displays a single reward entry (icon + amount) and animates changes when the value increases.
+- **ZoneProgressUI** — Shows which zone the player is currently in and visually moves as the player progresses through zones.
+- **BombPopupUI** — Presents the choice when a bomb is hit (continue or quit) with simple animated transitions.
 
 ---
 
