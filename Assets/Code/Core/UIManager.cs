@@ -34,6 +34,7 @@ namespace Code.Managers {
 
         private RewardManager _rewardManager;
         private ZoneManager _zoneManager;
+        private static string panelHeader = "ui_panel_";
 
         #endregion
 
@@ -49,20 +50,20 @@ namespace Code.Managers {
 
         private void ValidateRootReferences() {
             if (_buttonsRoot == null)
-                _buttonsRoot = transform.parent.Find("Panel_Buttons");
+                _buttonsRoot = transform.parent.Find($"{panelHeader}Buttons");
 
             if (_rewardsRoot == null)
-                _rewardsRoot = transform.parent.Find("Panel_Rewards/ui_panel_rewards");
+                _rewardsRoot = transform.parent.Find($"{panelHeader}Rewards/ui_rewards");
 
             if (_popupRoot == null)
-                _popupRoot = transform.parent.Find("Panel_Popups");
+                _popupRoot = transform.parent.Find($"{panelHeader}Popups");
         }
 
         private void ValidateButtonReferences() {
             if (_buttonsRoot != null && _spinButton == null)
                 _spinButton = _buttonsRoot.Find("Button_Spin")?.GetComponent<Button>();
 
-            Transform rewardsTopRoot = transform.parent.Find("Panel_Rewards/ui_panel_rewards/TopContent");
+            Transform rewardsTopRoot = transform.parent.Find($"{panelHeader}Rewards/ui_rewards/TopContent");
 
             if (rewardsTopRoot != null && _exitButton == null)
                 _exitButton = rewardsTopRoot.Find("Button_Exit")?.GetComponent<Button>();
@@ -70,7 +71,7 @@ namespace Code.Managers {
 
         private void ValidateUIReferences() {
             if (_zoneProgressUI == null)
-                _zoneProgressUI = transform.parent.Find("Panel_TopUI/ZoneIndicator")
+                _zoneProgressUI = transform.parent.Find($"{panelHeader}TopUI/ui_element_zoneIndicator")
                     ?.GetComponent<ZoneProgressUI>();
 
             if (_rewardsUI == null && _rewardsRoot != null)
@@ -101,6 +102,12 @@ namespace Code.Managers {
             GameEvents.SpinEnded += OnSpinEnded;
 
             BindButtonEvents();
+        }
+
+        void OnDestroy() {
+            GameEvents.BombHit -= OnBombHit;
+            GameEvents.SpinStarted -= OnSpinStarted;
+            GameEvents.SpinEnded -= OnSpinEnded;
         }
 
         #endregion
