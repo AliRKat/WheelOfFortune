@@ -149,6 +149,8 @@ namespace Code.Managers {
 
             for (int i = 0; i < 6; i++)
                 SpawnRewardIcon(icon, fromPoint, target);
+
+            target.AnimateAmountChange();
         }
 
         private void SpawnRewardIcon(Sprite icon, Transform fromPoint, RewardsUIItem target) {
