@@ -61,8 +61,10 @@ MonoBehaviour:
   - {fileID: 3582138526246149523}
   - {fileID: 1603902930976482659}
   _wheelVisual: {fileID: 3966286669775626042}
-  _baseWheelImage: {fileID: 3966286669775626041}
-  _indicatorImage: {fileID: 3966286670467646231}
+  _indicatorAngle: 90
+  _extraSpins: 3
+  _baseWheelImage_value: {fileID: 3966286669775626041}
+  _indicatorImage_value: {fileID: 3966286670467646231}
 --- !u!1 &3966286669775626043
 GameObject:
   m_ObjectHideFlags: 0
@@ -75,7 +77,7 @@ GameObject:
   - component: {fileID: 3966286669775626040}
   - component: {fileID: 3966286669775626041}
   m_Layer: 5
-  m_Name: Base
+  m_Name: ui_wheel_base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -159,7 +161,7 @@ GameObject:
   - component: {fileID: 3966286670467646230}
   - component: {fileID: 3966286670467646231}
   m_Layer: 5
-  m_Name: Indicator
+  m_Name: ui_wheel_indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -232,7 +234,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2191749805268578408, guid: 98cacd764cc4a0a4bacb4529c3c07548, type: 3}
       propertyPath: m_Name
-      value: Slot6
+      value: ui_wheel_slot_6
       objectReference: {fileID: 0}
     - target: {fileID: 6960626454901665850, guid: 98cacd764cc4a0a4bacb4529c3c07548, type: 3}
       propertyPath: m_Pivot.x
@@ -345,7 +347,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2191749805268578408, guid: 98cacd764cc4a0a4bacb4529c3c07548, type: 3}
       propertyPath: m_Name
-      value: Slot8
+      value: ui_wheel_slot_8
       objectReference: {fileID: 0}
     - target: {fileID: 6960626454901665850, guid: 98cacd764cc4a0a4bacb4529c3c07548, type: 3}
       propertyPath: m_Pivot.x
@@ -458,7 +460,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2191749805268578408, guid: 98cacd764cc4a0a4bacb4529c3c07548, type: 3}
       propertyPath: m_Name
-      value: Slot2
+      value: ui_wheel_slot_2
       objectReference: {fileID: 0}
     - target: {fileID: 6960626454901665850, guid: 98cacd764cc4a0a4bacb4529c3c07548, type: 3}
       propertyPath: m_Pivot.x
@@ -571,7 +573,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2191749805268578408, guid: 98cacd764cc4a0a4bacb4529c3c07548, type: 3}
       propertyPath: m_Name
-      value: Slot1
+      value: ui_wheel_slot_1
       objectReference: {fileID: 0}
     - target: {fileID: 6960626454901665850, guid: 98cacd764cc4a0a4bacb4529c3c07548, type: 3}
       propertyPath: m_Pivot.x
@@ -684,7 +686,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2191749805268578408, guid: 98cacd764cc4a0a4bacb4529c3c07548, type: 3}
       propertyPath: m_Name
-      value: Slot4
+      value: ui_wheel_slot_4
       objectReference: {fileID: 0}
     - target: {fileID: 6960626454901665850, guid: 98cacd764cc4a0a4bacb4529c3c07548, type: 3}
       propertyPath: m_Pivot.x
@@ -797,7 +799,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2191749805268578408, guid: 98cacd764cc4a0a4bacb4529c3c07548, type: 3}
       propertyPath: m_Name
-      value: Slot5
+      value: ui_wheel_slot_5
       objectReference: {fileID: 0}
     - target: {fileID: 6960626454901665850, guid: 98cacd764cc4a0a4bacb4529c3c07548, type: 3}
       propertyPath: m_Pivot.x
@@ -910,7 +912,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2191749805268578408, guid: 98cacd764cc4a0a4bacb4529c3c07548, type: 3}
       propertyPath: m_Name
-      value: Slot7
+      value: ui_wheel_slot_7
       objectReference: {fileID: 0}
     - target: {fileID: 6960626454901665850, guid: 98cacd764cc4a0a4bacb4529c3c07548, type: 3}
       propertyPath: m_Pivot.x
@@ -1023,7 +1025,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2191749805268578408, guid: 98cacd764cc4a0a4bacb4529c3c07548, type: 3}
       propertyPath: m_Name
-      value: Slot3
+      value: ui_wheel_slot_3
       objectReference: {fileID: 0}
     - target: {fileID: 6960626454901665850, guid: 98cacd764cc4a0a4bacb4529c3c07548, type: 3}
       propertyPath: m_Pivot.x

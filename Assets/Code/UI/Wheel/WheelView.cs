@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -10,126 +9,169 @@ public class WheelViewInitData {
 }
 
 public class WheelView : MonoBehaviour {
+
+    #region Serialized Fields
+
     [Header("References")]
     [SerializeField] private WheelSlotController[] _slots;
     [SerializeField] private Transform _wheelVisual;
 
     [Header("Spin Settings")]
-    [SerializeField] private float _indicatorAngle = 90f; // arrow points UP (90° in Atan2 space)
+    [SerializeField] private float _indicatorAngle = 90f;
     [SerializeField] private int _extraSpins = 3;
 
-    [SerializeField] private Image _baseWheelImage;
-    [SerializeField] private Image _indicatorImage;
+    [Header("Skin Elements")]
+    [SerializeField] private Image _baseWheelImage_value;
+    [SerializeField] private Image _indicatorImage_value;
+
+    #endregion
+
+    #region Private Fields
+
     private Tweener _spinTween;
     private WheelSlotController _winningSlot;
 
-    // ------------------------------------------------------------
-    // SETUP
-    // ------------------------------------------------------------
+    #endregion
+
+    #region Public API
+
+    /// <summary>
+    /// Initializes the wheel with the provided zone configuration and skin data.
+    /// </summary>
     public void SetUp(WheelViewInitData initData) {
-        var zone = initData.zoneConfig;
-        var skinData = initData.wheelSkinData;
-
-        if (zone == null) {
-            Debug.LogError("WheelView: ZoneConfig is null.");
+        if (!ValidateInitData(initData))
             return;
-        }
 
-        if (_slots == null || _slots.Length == 0) {
-            Debug.LogError("WheelView: Slot references are missing.");
-            return;
-        }
-
-        ApplySkin(skinData);
-        ApplySlots(zone);
+        ApplySkin(initData.wheelSkinData);
+        ApplySlots(initData.zoneConfig);
     }
 
+    /// <summary>
+    /// Returns the slot that corresponds to the last winning spin result.
+    /// </summary>
     public WheelSlotController GetWinningSlot() {
         return _winningSlot;
     }
 
-    private void ApplySlots(ZoneConfig zone) {
-        for (int i = 0; i < _slots.Length; i++) {
-
-            if (i >= zone.slices.Count) {
-                _slots[i].SetData(new SlotViewData(null, "", false));
-                continue;
-            }
-
-            var slice = zone.slices[i];
-            var item = slice.itemData;
-
-            if (item == null) {
-                _slots[i].SetData(new SlotViewData(null, "", false));
-                continue;
-            }
-
-            string amountText = item.showAmount
-                ? (slice.customAmount > 0 ? slice.customAmount : item.baseAmount).ToString()
-                : "";
-
-            var viewData = new SlotViewData(item.icon, amountText, true);
-            _slots[i].SetData(viewData);
-        }
-
-        _wheelVisual.localEulerAngles = Vector3.zero;
-    }
-
-    public void ClearAll() {
-        foreach (var slot in _slots)
-            slot.Clear();
-    }
-
-    // ------------------------------------------------------------
-    // SPIN ANIMATION
-    // ------------------------------------------------------------
     /// <summary>
-    /// Spins the wheel visually so that the given slice index lands at the top.
+    /// Spins the wheel so that the given slot index lands at the indicator.
     /// </summary>
     public void SpinToIndex(int targetIndex, float duration, System.Action onComplete) {
-        if (targetIndex < 0 || targetIndex >= _slots.Length) {
-            onComplete?.Invoke();
+        if (!ValidateSpinIndex(targetIndex, onComplete))
             return;
-        }
+
         GameEvents.SpinStarted?.Invoke();
 
-        // Kill any previous tween and hard reset rotation.
         _spinTween?.Kill();
         _winningSlot = _slots[targetIndex];
         _wheelVisual.localEulerAngles = Vector3.zero;
 
-        // Get the slot transform for the winning index.
-        var slotTransform = _slots[targetIndex].transform;
-
-        // Compute its local position relative to wheel center.
-        Vector3 localPos = _wheelVisual.InverseTransformPoint(slotTransform.position);
-
-        // Angle in degrees: 0 = right, 90 = up, -90 = down, 180/-180 = left.
-        float currentAngle = Mathf.Atan2(localPos.y, localPos.x) * Mathf.Rad2Deg;
-
-        // We want this slot to end up at _indicatorAngle (usually 90° for "up").
-        float deltaAngle = _indicatorAngle - currentAngle;
-
-        // Add extra full spins for visuals.
+        float deltaAngle = ComputeDeltaAngle(targetIndex);
         float totalRotation = (_extraSpins * 360f) + deltaAngle;
 
         _spinTween = _wheelVisual
             .DOLocalRotate(new Vector3(0, 0, totalRotation), duration, RotateMode.FastBeyond360)
             .SetEase(Ease.OutCubic)
-            .OnComplete(() => {
-                // Ensure we end exactly at the intended angle (no float residue).
-                _wheelVisual.localEulerAngles = new Vector3(0, 0, deltaAngle);
-                GameEvents.SpinEnded?.Invoke();
-                onComplete?.Invoke();
-            });
+            .OnComplete(() => FinishSpin(deltaAngle, onComplete));
     }
 
-    // ------------------------------------------------------------
-    // SKIN
-    // ------------------------------------------------------------
-    public void ApplySkin(WheelSkinData skin) {
-        if (skin == null) return;
-        _baseWheelImage.sprite = skin.baseWheel;
-        _indicatorImage.sprite = skin.indicator;
+    /// <summary>
+    /// Clears all slot visuals.
+    /// </summary>
+    public void ClearAll() {
+        for (int i = 0; i < _slots.Length; i++)
+            _slots[i].Clear();
     }
+
+    #endregion
+
+    #region Setup
+
+    private bool ValidateInitData(WheelViewInitData initData) {
+        if (initData == null || initData.zoneConfig == null) {
+            GameLogger.Error(this, "SetUp", "Init", "ZoneConfig is null.");
+            return false;
+        }
+
+        if (_slots == null || _slots.Length == 0) {
+            GameLogger.Error(this, "SetUp", "Init", "Slots array not assigned.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void ApplySlots(ZoneConfig zone) {
+        int sliceCount = zone.slices.Count;
+
+        for (int i = 0; i < _slots.Length; i++) {
+            if (i >= sliceCount) {
+                _slots[i].SetData(new SlotViewData(null, "", false));
+                continue;
+            }
+
+            ApplySingleSlot(_slots[i], zone.slices[i]);
+        }
+
+        _wheelVisual.localEulerAngles = Vector3.zero;
+    }
+
+    private void ApplySingleSlot(WheelSlotController slot, ZoneSlice slice) {
+        var item = slice.itemData;
+
+        if (item == null) {
+            slot.SetData(new SlotViewData(null, "", false));
+            return;
+        }
+
+        string amountText = item.showAmount
+            ? (slice.customAmount > 0 ? slice.customAmount : item.baseAmount).ToString()
+            : "";
+
+        var viewData = new SlotViewData(item.icon, amountText, true);
+        slot.SetData(viewData);
+    }
+
+    #endregion
+
+    #region Spin Calculation
+
+    private bool ValidateSpinIndex(int index, System.Action onComplete) {
+        if (index < 0 || index >= _slots.Length) {
+            GameLogger.Warn(this, "SpinToIndex", "Guard", "Invalid spin index.");
+            onComplete?.Invoke();
+            return false;
+        }
+        return true;
+    }
+
+    private float ComputeDeltaAngle(int targetIndex) {
+        var slotTransform = _slots[targetIndex].transform;
+
+        Vector3 localPos = _wheelVisual.InverseTransformPoint(slotTransform.position);
+        float currentAngle = Mathf.Atan2(localPos.y, localPos.x) * Mathf.Rad2Deg;
+
+        return _indicatorAngle - currentAngle;
+    }
+
+    private void FinishSpin(float deltaAngle, System.Action onComplete) {
+        _wheelVisual.localEulerAngles = new Vector3(0, 0, deltaAngle);
+
+        GameEvents.SpinEnded?.Invoke();
+        onComplete?.Invoke();
+    }
+
+    #endregion
+
+    #region Skin
+
+    private void ApplySkin(WheelSkinData skin) {
+        if (skin == null)
+            return;
+
+        _baseWheelImage_value.sprite = skin.baseWheel;
+        _indicatorImage_value.sprite = skin.indicator;
+    }
+
+    #endregion
 }
